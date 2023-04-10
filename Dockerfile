@@ -1,20 +1,18 @@
-FROM python:3.8-slim
+FROM python:3.8-alpine as base
 
-ENV PYTHONFAULTHANDLER=1
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONHASHSEED=random
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PIP_NO_CACHE_DIR=off
-ENV PIP_DISABLE_PIP_VERSION_CHECK=on
-ENV PIP_DEFAULT_TIMEOUT=100
+FROM base as builder
 
-RUN apt-get update
-RUN apt-get install -y python3 python3-pip python-dev build-essential python3-venv ffmpeg
+RUN mkdir /install
+RUN apk update && apk add python3-dev
+WORKDIR /install
+COPY requirements.txt /requirements.txt
+RUN pip install --prefix=/install -r /requirements.txt
 
-RUN mkdir -p /code
-ADD . /code
+FROM base
+
+COPY --from=builder /install /usr/local
+COPY . /code
+RUN pip install -r /code/requirements.txt
+RUN apk --no-cache add ffmpeg
+RUN apk add --no-cache bash
 WORKDIR /code
-
-RUN pip3 install -r requirements.txt
-
-CMD ["bash"]
