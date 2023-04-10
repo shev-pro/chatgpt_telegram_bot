@@ -1,8 +1,8 @@
+import uuid
+from datetime import datetime
 from typing import Optional, Any
 
 import pymongo
-import uuid
-from datetime import datetime
 
 import config
 
@@ -10,7 +10,7 @@ import config
 class Database:
     def __init__(self):
         self.client = pymongo.MongoClient(config.mongodb_uri)
-        self.db = self.client["chatgpt_telegram_bot"]
+        self.db = self.client[config.mongodb_db]
 
         self.user_collection = self.db["user"]
         self.dialog_collection = self.db["dialog"]
@@ -25,12 +25,12 @@ class Database:
                 return False
 
     def add_new_user(
-        self,
-        user_id: int,
-        chat_id: int,
-        username: str = "",
-        first_name: str = "",
-        last_name: str = "",
+            self,
+            user_id: int,
+            chat_id: int,
+            username: str = "",
+            first_name: str = "",
+            last_name: str = "",
     ):
         user_dict = {
             "_id": user_id,

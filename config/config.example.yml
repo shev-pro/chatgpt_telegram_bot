@@ -1,7 +1,7 @@
 telegram_token: ""
 openai_api_key: ""
 use_chatgpt_api: true
-allowed_telegram_usernames: []  # if empty, the bot is available to anyone. pass a username string to allow it and/or user ids as integers
+allowed_telegram_usernames: [ ]  # if empty, the bot is available to anyone. pass a username string to allow it and/or user ids as integers
 new_dialog_timeout: 600  # new dialog starts after timeout (in seconds)
 enable_message_streaming: true  # if set, messages will be shown to user word-by-word
 
@@ -9,3 +9,12 @@ enable_message_streaming: true  # if set, messages will be shown to user word-by
 chatgpt_price_per_1000_tokens: 0.002
 gpt_price_per_1000_tokens: 0.02
 whisper_price_per_1_min: 0.006
+
+#webhook
+enable_webhook: false # if set, the bot will use webhook instead of long polling
+webhook_host: "https://example.com"
+webhook_port: 8000
+webhook_listen: "0.0.0.0"
+# webhook_cert and webhook_key are optional if you use a reverse proxy
+webhook_cert: "/etc/letsencrypt/live/chatgpt.com/fullchain.pem"
+webhook_key: "/etc/letsencrypt/live/chatgpt.com/privkey.pem"
